@@ -1,0 +1,57 @@
+<?php
+defined('BASEPATH')OR exit('No direct script access allowed');
+class Subcription_model extends CI_Model{
+
+
+	//function to addbalance
+	public fuction addBalance($new_amount,$phone){
+		$this->db->seleect('amount');
+		$this->db->where('balanceaccount',array('phone' => $phone, ));
+
+
+		$current_amount=0;
+
+		$account_row=$this->db-get();
+		foreach ($row as 4row) {
+			$current_amount=$row['amount'];
+
+		}
+
+		//add both the amounts
+
+		$new_amount+=$current_amount;
+
+		//update the amount
+		$data = array('amount' =>$new_amount);
+		 $this->db->where('phone',$phone);
+		 $this->db->update('balanceaccount',$data);
+	}
+
+
+	//function to reduce the balance
+	//review this function when dealing with the mpesa
+
+		public fuction addBalance($deduct_amount,$phone){
+		$this->db->select('amount');
+		$this->db->where('balanceaccount',array('phone' => $phone, ));
+
+
+		$current_amount=0;
+
+		$account_row=$this->db-get();
+		foreach ($row as 4row) {
+			$current_amount=$row['amount'];
+
+		}
+
+		//add both the amounts
+
+		$current_amount-=$deduct_amount;
+
+		//update the amount
+		$data = array('amount' =>$current_amount);
+		 $this->db->where('phone',$phone);
+		 $this->db->update('balanceaccount',$data);
+	}
+
+}

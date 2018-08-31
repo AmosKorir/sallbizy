@@ -4,7 +4,7 @@ class Sb extends CI_model{
 
 
 	public function addBalance($new_amount,$phone){
-		$this->db->seleect('amount');
+		$this->db->select('amount');
 		$this->db->where('balanceaccount',array('phone' => $phone, ));
 
 

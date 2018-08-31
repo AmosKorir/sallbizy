@@ -27,18 +27,16 @@ defined('BASEPATH')OR exit('No direct script access allowed');
 
     //function to login the user
 
-    public function login(){
-    	if(isset($_POST['phone'],$_POST['password'])){
-    		$message=$this->Auth_model->get_user($_POST['phone'],$_POST['password']);
+    public function login($phone,$password){
+    	
+    		$message=$this->Auth_model->get_user($phone,$password);
             if($message===null){
                $message="unsucessfull";
             }else{
                  $message="sucessfull";
             }
     		echo ($message);
-    	}else{
-    		echo "Error!";
-    	}
+    	
     }
 
     //fuction to activate the account

@@ -2,14 +2,16 @@
 
 class Song_model extends CI_model{
 
+    //function to return distinct categories
 
-    // function to get lastest songs
-    public function getLastest(){
-        $query=$this->db->get('songs');
-        return $query->result_array();
+    public function getCategories(){
+      $this->db->select('songs.category');
+      $this->db->distinct();
+      $this->db->from('songs');
+      $query=$this->db->get();
+      return $query->result_array();
     }
-
-
+   
 
 
     // function to the albums available
@@ -19,42 +21,7 @@ class Song_model extends CI_model{
        $this->db->limit($limit,$page);
        $query=$this->db->get();
        return $query->result_array();
-     }
-
- 
-    // function to get by genre
-    public function getGenre($genre=NULL){
-        if($genre===NULL){
-
-        }else{
-
-                $this->db->select(   'songs.id,
-                            songs.category,
-                            songs.price,
-                            songs.title,
-                            songs.video,
-                            songs.performance,
-                            artist.name, 
-                            albums.name, 
-                            albums.image                        
-                          ');
-      $this->db->from('songs');
-
-      $this->db->join('artist','songs.artist=artist.artistid');
-      $this->db->join('albums','songs.album=albums.albumid');
-     
-     //$this->db->like('albums.name','Nukuu');
-     $this->db->order_by("songs.performance", "desc");
-      $where="category='".$genre."'";
-      $this->db->where($where);
-
-      $this->db->limit(50,0);
-      $query= $this->db->get();
-
-      return $query->result_array();
-
-        }
-    }
+     }  
 
 
     // function to get songs of the same album
@@ -166,7 +133,7 @@ public function getAdverts(){
 
 //function to get the joined songs
 
-public function getSongs($limit,$start,$category){
+public function getSongs($limit,$start,$category,$type){
         $this->db->select('songs.id,
                             songs.category,
                             songs.price,
@@ -181,35 +148,15 @@ public function getSongs($limit,$start,$category){
       $this->db->join('artist','songs.artist=artist.artistid');
       $this->db->join('albums','songs.album=albums.albumid');
       $this->db->where($where);
-      $this->db->limit($limit,$start);
-    $query= $this->db->get();
-
-    return $query->result_array();
-}
-
-//function to get the audio
-
-public function getAudio($limit,$start){
-  $this->db->select('songs.id,
-                            songs.category,
-                            songs.price,
-                            songs.title,
-                            songs.video,
-                            artist.name, 
-                            albums.name,
-                            albums.image                         
-                          ');
-      $this->db->from('songs');
-     $where = "songs.type='"."Audio"."'";
-      $this->db->join('artist','songs.artist=artist.artistid');
-      $this->db->join('albums','songs.album=albums.albumid');
+      $where = "songs.type='".$type."'";
       $this->db->where($where);
-      $this->db->order_by('songs.performance','desc');
-     $this->db->limit($limit,$start);
-    $query= $this->db->get();
+      $this->db->limit($limit,$start);
+      $query= $this->db->get();
 
     return $query->result_array();
 }
+
+
 
 
 //search function
@@ -349,13 +296,11 @@ public function createSound($insertid){
         $this->db->join('artist','songs.artist=artist.artistid');
         $this->db->join('albums','songs.album=albums.albumid');
         $where = "playlist.phone='".$phone."'";
-          $this->db->where($where);
-          $query=$this->db->get();
-          return $query->result_array();
+        $this->db->where($where);
+        $query=$this->db->get();
+
+       return $query->result_array();
     
-  }
-
-
- 
+  } 
 }
 ?>

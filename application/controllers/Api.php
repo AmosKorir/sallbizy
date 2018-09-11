@@ -3,7 +3,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Api extends CI_Controller {
 
-
+//fuction to get the initial categories
+public function getCategory(){
+    $category=$this->Song_model->getCategories();
+    $categories['categories']=$category;
+    echo json_encode($categories);
+}
 
 // function to get te albums
 public function getAlbums($start,$stop){
@@ -15,8 +20,8 @@ The following are function to get the category of songs
 
 */
 
-public function getSong($category,$start,$stop){
-    $songs['cat']=$this->Song_model->getSongs($start,$stop,$category);
+public function getSong($category,$start,$stop,$type){
+    $songs['cat']=$this->Song_model->getSongs($stop,$start,$category,$type);
     echo json_encode($songs);
 }
 
@@ -27,15 +32,6 @@ public function getPlaylist($phone){
     echo json_encode($result);
 
 }
-
-//function to get the top ranking songs
-
-public function getTopSongs(){
-    $result=$this->Song_model->topSongs();
-    $currentSongs['songs']=$result;
-    echo json_encode($currentSongs);
-}
-
 
 }
 ?>

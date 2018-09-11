@@ -9,7 +9,7 @@ class Sub extends CI_Controller {
 	{
 
 	
-		}
+	}
 
 
 	public function calling(){
@@ -24,7 +24,7 @@ class Sub extends CI_Controller {
 			$this->subscribe($songid,$price,$phone,$password);
 			
 	   }else{
-	   //	echo "mm";
+	  
 	   
 	   }
 	}
@@ -53,8 +53,8 @@ class Sub extends CI_Controller {
 		if($phone!==null){
 				$result=$this->Sb->Balance($phone);
 				echo $result;
-	}
-		}
+	    }
+    }
 	
 
 }

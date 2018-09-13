@@ -4,10 +4,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Api extends CI_Controller {
 
 //fuction to get the initial categories
-public function getCategory(){
-    $category=$this->Song_model->getCategories();
-    $categories['categories']=$category;
-    echo json_encode($categories);
+public function getCategory($type){
+    $category=$this->Song_model->getSolid($type);
+    $categorym['cate']=$category;
+    echo json_encode($categorym);
 }
 
 // function to get te albums
@@ -31,6 +31,12 @@ public function getPlaylist($phone){
     $result['songs']=$this->Song_model->playlist($phone);
     echo json_encode($result);
 
+}
+
+//function to get the url
+public function geturl($name){
+$url=$this->Song_model->getUrl($name);
+echo $url;
 }
 
 }

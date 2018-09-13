@@ -1,7 +1,111 @@
 <?php
 defined('BASEPATH')OR exit('No direct script access allowed');
+require 'aws/aws-autoloader.php';
+use Aws\S3\S3Client;
 class Admin_model extends CI_Model{
+private $SECRET_KEY='D+qSnD8t4kAFdUA3nLFKs83Rpp4pz7GUW32lScb6';
+private $KEY='AKIAIVBE7O7I3JXPBP2Q';
+private function initS3(){
+//instantiate amazon s3 client
+$s3=new S3Client([
+	'version'=>'latest',
+	'region'=>'us-west-2',
+	'credentials'=>[
+		'key'=>$this->KEY,
+		'secret'=>$this->SECRET_KEY
+	]
+]);
+return $s3;
+}
 
+//function to create packets in s3
+public function createBacket($name){
+	$client=$this->initS3();
+	try{
+		$result=$client->createBucket(
+			[
+				'Bucket'=>$name
+				
+			]
+			);
+	} catch(Exception $e){
+			echo "error occured";
+	}
+
+}
+
+//function to upload a file to s3 databasee
+
+public function uploadFile($file,$filename,$backectName){
+	$client=$this->initS3();
+	try{
+		$result=$client->putObject(
+			[
+				'Bucket'=>$backectName,
+				'Key'=>$filename,
+				'SourceFile'=>$file
+			]
+			);
+	}catch(Exception $e){
+		echo"there was was an error".$e;
+	}
+}
+
+
+//function to get access to a video file
+public function getVideoUrl(){
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	////////////////////////////////////////////////////////////////////////
 	//function to insert the artist
 
 	public function insertArtist($image,$name){
@@ -15,7 +119,7 @@ class Admin_model extends CI_Model{
 
 	private function createMetaphone($name){
 		return metaphone($name);
-	}
+			}
 
 
 	//fuction get all the artists by search and all

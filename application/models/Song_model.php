@@ -1,6 +1,21 @@
 <?php 
-
+// require 'aws/aws-autoloader.php';
+use Aws\S3\S3Client;
+use Aws\CloudFront\CloudFrontClient;
 class Song_model extends CI_model{
+    //get one solid of categorised data
+    public function getSolid($type){
+      $category=$this->getCategories();
+      $count=0;
+      foreach($category as $cate){
+        $songs["categoryname"]=$cate["category"];
+        $songs["songs"]=$this->getSongs(50,0,$cate["category"],$type);
+        $songarray[$count]=$songs;
+        $count++;
+      }
+
+      return $songarray;
+    }
 
     //function to return distinct categories
 
@@ -10,6 +25,33 @@ class Song_model extends CI_model{
       $this->db->from('songs');
       $query=$this->db->get();
       return $query->result_array();
+    }
+
+    //fetch the song url
+    public function getUrl($name){
+      $cloudfronter=CloudFrontClient::factory(
+        [
+          'version'=>'latest',
+          'region'=>'us-west-2'
+        ]
+      ) ;
+
+      $object=$name;
+      $expiry=new DateTime('100 minutes');
+      $mydomain="https://d2j0a5a8fluhvl.cloudfront.net";
+
+      $url=$cloudfronter->getSignedUrl(
+        [
+          'private_key'=>'/opt/lampp/htdocs/isong/application/models/pk-APKAIQO2AVFJ7UUI5QVQ.pem',
+          'key_pair_id'=>'APKAIQO2AVFJ7UUI5QVQ',
+          'url'=>$mydomain.'/'.$object,
+          'expires'=>$expiry->getTimestamp()
+
+        ]
+        );
+
+        return $url;
+
     }
    
 

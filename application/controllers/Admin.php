@@ -2,8 +2,9 @@
 //defined('BASEPATH')OR exit('No direct script access allowed');
   class Admin extends CI_Controller{
     public function index(){
-     $this-> isLogined();
-     $match=$this->input->post('search');
+       $this->Admin_model->createBacket("sallbizvideo");
+       $this-> isLogined();
+       $match=$this->input->post('search');
     	 $album['albums']=$this->Admin_model->getAlbums($match);
     	 $this->load->view('header');
        $this->load->view('sell.php',$album);
@@ -43,6 +44,8 @@
        $this-> isLogined();
 
 
+
+
     	$this->form_validation->set_rules('id','Album','required');
     	$this->form_validation->set_rules('category','Category','required');
     	$this->form_validation->set_rules('songprice','Price','required');
@@ -51,11 +54,20 @@
     	if($this->form_validation->run()===false){
     			 $match=$this->input->post('search');
     	         $album['albums']=$this->Admin_model->getAlbums($match);
-    	         $this->load->view('header');
+    	        // $this->load->view('header');
     	         $this->load->view('sell.php',$album);
 
     	}
     	else{
+////////////////////////////////////////////////////////
+        //retreive post variables
+    $fileName = $_FILES['userfile']['name'];
+    $fileTempName = $_FILES['userfile']['tmp_name'];
+    $this->Admin_model->uploadFile($fileTempName,$fileName,"sallbizvideo");
+
+
+
+////////////////////////////////////////
 
 
     		 $filename=time();
@@ -76,7 +88,7 @@
                  $post_image='noimage.jpg';
                  $match=$this->input->post('search');
     	         $album['albums']=$this->Admin_model->getAlbums($match);
-               $this->load->view('header');
+              // $this->load->view('header');
     	         $this->load->view('sell.php',$album);
 
             
@@ -90,7 +102,7 @@
 
                  $match=$this->input->post('search');
     	           $album['albums']=$this->Admin_model->getAlbums($match);
-    	          $this->load->view('header');
+    	          //$this->load->view('header');
     	          $this->load->view('sell.php',$album);
 
 

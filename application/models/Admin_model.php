@@ -183,8 +183,8 @@ public function getVideoUrl(){
 	}
 
 	public function deleter($table,$where){
-    $this->db->select();
-    $this->db->from($table);
+	$this->db->select();
+	$this->db->from($table);
     $this->db->where($where);
     $result=$this->db->get();
     $result=$result->result_array();
